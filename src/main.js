@@ -3,8 +3,10 @@ import MediaInfoFactory from 'mediainfo.js';
 import mediaInfoWasmUrl from 'mediainfo.js/MediaInfoModule.wasm?url';
 
 document.querySelector('#app').innerHTML = `
-  <h1>ComfyUI Video Workflow Extractor</h1>
-
+  <div style="display:flex;justify-content:space-between;margin-bottom:1em;">
+     <span style="color: black;font-weight: bold;">ComfyUI Video Workflow Extractor</span>
+     <span style="font-size:12px;">All processing done in browser. <a href="https://github.com/gabecastello/comfyui-video-workflow-viewer" target="_blank">GitHub</a></span>
+  </div>
   <div class="container">
 
   <input id="fileInput" type="file" accept=".mp4" />
