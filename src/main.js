@@ -13,9 +13,12 @@ document.querySelector('#app').innerHTML = `
 
   <p id="status"></p>
 
-  <button id="copyBtn" disabled>Copy Workflow</button>
+  <div style="display:flex;margin-bottom:1em;gap:1em;">
+    <button id="copyBtn" disabled>Copy Workflow</button>
+    <button id="downloadBtn" disabled>Download</button>
+  </div>
 
-  <pre id="output"></pre>
+  <textarea id="output" style="width:100%; height:40em; font-family: monospace;"></textarea>
   </div>
 `;
 
@@ -23,6 +26,7 @@ const fileInput = document.getElementById('fileInput');
 const status = document.getElementById('status');
 const output = document.getElementById('output');
 const copyBtn = document.getElementById('copyBtn');
+const downloadBtn = document.getElementById('downloadBtn');
 
 const mediaInfo = await MediaInfoFactory({
   format: 'object',
@@ -35,7 +39,7 @@ fileInput.addEventListener('change', async (e) => {
   if (!file) return;
 
   status.textContent = 'Reading metadata...';
-  output.textContent = '';
+  output.value = '';
 
   try {
     const result = await mediaInfo.analyzeData(
@@ -65,8 +69,9 @@ fileInput.addEventListener('change', async (e) => {
       pretty = JSON.stringify(JSON.parse(pretty), null, 2);
     } catch {}
 
-    output.textContent = pretty;
+    output.value = pretty;
     copyBtn.disabled = false;
+    downloadBtn.disabled = false;
   } catch (err) {
     console.error(err);
     status.textContent = 'Failed';
@@ -74,7 +79,25 @@ fileInput.addEventListener('change', async (e) => {
 });
 
 copyBtn.addEventListener('click', async () => {
-  await navigator.clipboard.writeText(output.textContent);
+  copyBtn.textContent = 'Copied';
+  setTimeout(() => {
+    copyBtn.textContent = 'Copy Workflow';
+  }, 2000);
+  await navigator.clipboard.writeText(output.value);
+});
+
+downloadBtn.addEventListener('click', async () => {
+  downloadBtn.textContent = 'Downloading...';
+  setTimeout(() => {
+    downloadBtn.textContent = 'Download';
+  }, 2000);
+  const blob = new Blob([output.value], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'workflow.json';
+  a.click();
+  URL.revokeObjectURL(url);
 });
 
 function findWorkflow(obj) {
