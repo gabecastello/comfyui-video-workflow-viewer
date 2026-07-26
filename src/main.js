@@ -90,17 +90,34 @@ function renderHistory() {
         <span class="history-item-name">${item.fileName}</span>
         <span class="history-item-date">${new Date(item.timestamp).toLocaleString()}</span>
       </div>
-      <button class="delete-item-btn" title="Delete item">&times;</button>
+      <div>
+        <button class="edit-item-btn" title="Rename item">✏️</button>
+        <button class="delete-item-btn" title="Delete item">🗑</button>
+      </div>
     `;
 
     // Click on item body -> Load into editor
     li.addEventListener('click', (e) => {
-      if (e.target.classList.contains('delete-item-btn')) return;
+      if (
+        e.target.classList.contains('delete-item-btn') ||
+        e.target.classList.contains('edit-item-btn')
+      )
+        return;
+
       output.value = item.data;
       status.textContent = `Loaded "${item.fileName}" from history`;
       status.style.color = 'black';
       copyBtn.disabled = false;
       downloadBtn.disabled = false;
+    });
+
+    // Click pencil icon -> Open prompt to edit name
+    li.querySelector('.edit-item-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const newName = window.prompt('Enter new name:', item.fileName);
+      if (newName !== null && newName.trim() !== '') {
+        updateHistoryItemName(item.id, newName.trim());
+      }
     });
 
     // Click delete button -> Remove item
@@ -117,6 +134,16 @@ function deleteHistoryItem(id) {
   const history = getHistory().filter((item) => item.id !== id);
   saveHistory(history);
   renderHistory();
+}
+
+function updateHistoryItemName(id, newName) {
+  const history = getHistory();
+  const item = history.find((i) => i.id === id);
+  if (item) {
+    item.fileName = newName;
+    saveHistory(history);
+    renderHistory();
+  }
 }
 
 // File Upload Handler

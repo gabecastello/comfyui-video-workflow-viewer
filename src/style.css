@@ -52,7 +52,9 @@ pre {
   padding: 1em;
   display: flex;
   flex-direction: column;
-  transition: margin-left 0.3s ease, opacity 0.3s ease;
+  transition:
+    margin-left 0.3s ease,
+    opacity 0.3s ease;
   box-sizing: border-box;
 }
 
@@ -120,9 +122,7 @@ pre {
 .delete-item-btn {
   background: none;
   border: none;
-  color: #ef4444;
   cursor: pointer;
-  font-weight: bold;
   padding: 0.2em 0.5em;
 }
 
@@ -131,4 +131,18 @@ pre {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+.edit-item-btn {
+  background: none;
+  border: none;
+  color: #52525b;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0.2em 0.4em;
+  margin-right: 0.2em;
+}
+
+.edit-item-btn:hover {
+  color: #000000;
 }
