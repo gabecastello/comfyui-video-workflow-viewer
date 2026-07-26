@@ -34,3 +34,101 @@ pre {
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
 }
+
+/* Layout wrapper */
+.app-layout {
+  display: flex;
+  gap: 1em;
+  height: calc(100vh - 80px);
+  position: relative;
+}
+
+/* History Sidebar */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: #f4f4f5;
+  border-right: 1px solid #e4e4e7;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease, opacity 0.3s ease;
+  box-sizing: border-box;
+}
+
+.sidebar.collapsed {
+  margin-left: -280px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1em 0;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 0.75em;
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 4px;
+  margin-bottom: 0.5em;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.history-item:hover {
+  background: #f0f0f0;
+}
+
+.history-item-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.history-item-name {
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-item-date {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.delete-item-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 0.2em 0.5em;
+}
+
+/* Main content area adjustment */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
