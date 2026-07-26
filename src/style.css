@@ -119,20 +119,21 @@ pre {
   color: #71717a;
 }
 
+/* Container for action buttons (Edit, Delete) */
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
 .delete-item-btn {
   background: none;
   border: none;
   cursor: pointer;
   padding: 0.2em 0.5em;
 }
-
-/* Main content area adjustment */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 .edit-item-btn {
   background: none;
   border: none;
@@ -140,9 +141,46 @@ pre {
   cursor: pointer;
   font-size: 0.85rem;
   padding: 0.2em 0.4em;
-  margin-right: 0.2em;
+  margin-right: 0; /* Handled by container gap */
 }
 
 .edit-item-btn:hover {
   color: #000000;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Drag and Drop Overlay */
+.drag-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: none; /* Prevents flickering during dragover */
+  transition: opacity 0.2s ease;
+}
+
+.drag-overlay.hidden {
+  display: none;
+}
+
+.drag-overlay-message {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 3px dashed #ffffff;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.4);
 }

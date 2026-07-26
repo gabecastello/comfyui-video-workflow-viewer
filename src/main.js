@@ -47,6 +47,13 @@ document.querySelector('#app').innerHTML = `
         <textarea id="output" style="width:100%; height:40em; font-family: monospace;"></textarea>
       </div>
     </main>
+
+    <!-- Drop overlay -->
+    <div id="dragOverlay" class="drag-overlay hidden">
+      <div class="drag-overlay-message">
+        📂 Drop file anywhere
+      </div>
+    </div>
   </div>
 `;
 
@@ -61,6 +68,7 @@ const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
 const clearAllBtn = document.getElementById('clearAllBtn');
 const sidebar = document.getElementById('sidebar');
 const historyList = document.getElementById('historyList');
+const dragOverlay = document.getElementById('dragOverlay');
 
 let currentFileName = '';
 
@@ -90,7 +98,7 @@ function renderHistory() {
         <span class="history-item-name">${item.fileName}</span>
         <span class="history-item-date">${new Date(item.timestamp).toLocaleString()}</span>
       </div>
-      <div>
+      <div class="action-buttons">
         <button class="edit-item-btn" title="Rename item">✏️</button>
         <button class="delete-item-btn" title="Delete item">🗑</button>
       </div>
@@ -245,3 +253,38 @@ function findWorkflow(obj) {
 
   return null;
 }
+
+// Prevent default drag behaviors across the window
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach((eventName) => {
+  window.addEventListener(eventName, (e) => e.preventDefault());
+  window.addEventListener(eventName, (e) => e.stopPropagation());
+});
+
+// Show signal/overlay when dragging a file over the window
+let dragCounter = 0; // Helps track nested child element hover states
+
+window.addEventListener('dragenter', (e) => {
+  dragCounter++;
+  if (e.dataTransfer.types.includes('Files')) {
+    dragOverlay.classList.remove('hidden');
+  }
+});
+
+window.addEventListener('dragleave', (e) => {
+  dragCounter--;
+  if (dragCounter === 0) {
+    dragOverlay.classList.add('hidden');
+  }
+});
+
+// Handle the dropped file anywhere on the page
+window.addEventListener('drop', (e) => {
+  dragCounter = 0;
+  dragOverlay.classList.add('hidden');
+
+  const files = e.dataTransfer.files;
+  if (files && files.length > 0) {
+    fileInput.files = files;
+    fileInput.dispatchEvent(new Event('change'));
+  }
+});
