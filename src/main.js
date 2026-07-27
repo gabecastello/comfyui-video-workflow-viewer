@@ -203,6 +203,28 @@ fileInput.addEventListener('change', async (e) => {
 });
 
 // Event Listeners
+copyBtn.addEventListener('click', async () => {
+  copyBtn.textContent = 'Copied';
+  setTimeout(() => {
+    copyBtn.textContent = 'Copy Workflow';
+  }, 2000);
+  await navigator.clipboard.writeText(output.value);
+});
+
+downloadBtn.addEventListener('click', async () => {
+  downloadBtn.textContent = 'Downloading...';
+  setTimeout(() => {
+    downloadBtn.textContent = 'Download';
+  }, 2000);
+  const blob = new Blob([output.value], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'workflow.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
 saveHistoryBtn.addEventListener('click', () => {
   if (!output.value) return;
 
@@ -228,10 +250,6 @@ clearAllBtn.addEventListener('click', () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     renderHistory();
   }
-});
-
-copyBtn.addEventListener('click', async () => {
-  await navigator.clipboard.writeText(output.textContent);
 });
 
 // Initial Render
